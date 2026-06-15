@@ -1,0 +1,1945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KINEVO Schools</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0F172A;
+  --navy2: #1E293B;
+  --navy3: #334155;
+  --lime: #A3E635;
+  --lime-dark: #84CC16;
+  --coral: #F97316;
+  --sky: #38BDF8;
+  --purple: #A78BFA;
+  --pink: #F472B6;
+  --green: #4ADE80;
+  --card: #1E293B;
+  --text: #F1F5F9;
+  --muted: #94A3B8;
+  --border: #334155;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--navy);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── PARTICLES ── */
+#particles { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+.particle {
+  position: absolute;
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  opacity: 0;
+  animation: floatUp 8s infinite;
+}
+@keyframes floatUp {
+  0% { transform: translateY(100vh) scale(0); opacity: 0; }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.2; }
+  100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+}
+
+/* ── PAGES ── */
+.page { display: none; position: relative; z-index: 1; min-height: 100vh; }
+.page.active { display: block; }
+
+/* ── HEADER ── */
+.app-header {
+  background: linear-gradient(135deg, var(--navy2) 0%, #0D1B2A 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(10px);
+}
+.app-header h1 {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900;
+  font-size: 1.4rem;
+  background: linear-gradient(90deg, var(--lime), var(--sky));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.header-right { display: flex; align-items: center; gap: 12px; }
+.streak-pill {
+  background: linear-gradient(135deg, #F97316, #EF4444);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  font-family: 'Nunito', sans-serif;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+
+/* ── CONTAINER ── */
+.container { padding: 20px; max-width: 900px; margin: 0 auto; }
+
+/* ── CARDS ── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  margin: 12px 0;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+.card-accent { border-top: 3px solid var(--lime); }
+.card-coral { border-top: 3px solid var(--coral); }
+.card-sky { border-top: 3px solid var(--sky); }
+.card-purple { border-top: 3px solid var(--purple); }
+.card-glow::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top right, rgba(163,230,53,0.07), transparent 70%);
+  pointer-events: none;
+}
+
+.card h3 {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 1rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 14px;
+}
+
+/* ── GRID ── */
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 14px; }
+.grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap: 12px; }
+
+/* ── STAT PILL ── */
+.stat-pill {
+  background: var(--navy);
+  border-radius: 12px;
+  padding: 14px;
+  text-align: center;
+  border: 1px solid var(--border);
+}
+.stat-pill .val {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.7rem;
+  font-weight: 900;
+  display: block;
+}
+.stat-pill .lbl { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+
+/* ── XP RING ── */
+.xp-ring-wrap { display: flex; justify-content: center; align-items: center; flex-direction: column; padding: 10px 0; }
+.ring-svg { width: 140px; height: 140px; }
+.ring-track { fill: none; stroke: var(--border); stroke-width: 10; }
+.ring-fill {
+  fill: none; stroke: url(#ringGrad); stroke-width: 10;
+  stroke-linecap: round;
+  stroke-dasharray: 352;
+  stroke-dashoffset: 352;
+  animation: fillRing 1.5s ease forwards 0.3s;
+  transform: rotate(-90deg); transform-origin: center;
+}
+@keyframes fillRing { to { stroke-dashoffset: 97; } }
+.ring-label { position: absolute; text-align: center; }
+.ring-label .xp-val {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--lime);
+  display: block;
+}
+.ring-label .xp-lbl { font-size: 0.7rem; color: var(--muted); }
+.ring-outer { position: relative; display: inline-flex; justify-content: center; align-items: center; }
+
+/* ── PROGRESS BAR ── */
+.prog-bar { background: var(--navy); border-radius: 10px; height: 10px; overflow: hidden; margin: 8px 0; }
+.prog-fill {
+  height: 100%;
+  border-radius: 10px;
+  background: linear-gradient(90deg, var(--lime-dark), var(--lime));
+  animation: growBar 1s ease forwards;
+  transform-origin: left;
+}
+@keyframes growBar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* ── BUTTONS ── */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: linear-gradient(135deg, var(--lime-dark), var(--lime));
+  color: var(--navy);
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 0.9rem;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s;
+}
+.btn:hover { opacity: 0.9; transform: scale(1.02); }
+.btn:active { transform: scale(0.98); }
+.btn-ghost {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--border);
+}
+.btn-ghost:hover { color: var(--text); border-color: var(--text); }
+.btn-coral { background: linear-gradient(135deg, #EA580C, var(--coral)); color: white; }
+.btn-sky { background: linear-gradient(135deg, #0284C7, var(--sky)); color: white; }
+.btn-sm { padding: 6px 14px; font-size: 0.8rem; }
+
+/* ── BADGE WALL ── */
+.badge-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+.badge {
+  background: var(--navy);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 8px 12px;
+  font-size: 0.82rem;
+  display: flex; align-items: center; gap: 6px;
+  transition: border-color 0.2s, transform 0.2s;
+  cursor: default;
+}
+.badge:hover { border-color: var(--lime); transform: scale(1.05); }
+.badge.earned { border-color: var(--lime); background: rgba(163,230,53,0.08); }
+.badge.locked { opacity: 0.4; filter: grayscale(1); }
+
+/* ── LEADERBOARD ── */
+.lb-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 14px; border-radius: 12px;
+  transition: background 0.2s;
+  margin-bottom: 6px;
+}
+.lb-row:hover { background: var(--navy); }
+.lb-row.me { background: rgba(163,230,53,0.08); border: 1px solid rgba(163,230,53,0.3); }
+.lb-rank {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900;
+  font-size: 1rem;
+  width: 26px; text-align: center;
+}
+.lb-rank.gold { color: #FCD34D; }
+.lb-rank.silver { color: #CBD5E1; }
+.lb-rank.bronze { color: #C2855A; }
+.lb-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+.lb-info { flex: 1; }
+.lb-name { font-weight: 600; font-size: 0.9rem; }
+.lb-sub { font-size: 0.72rem; color: var(--muted); }
+.lb-xp {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  color: var(--lime);
+  font-size: 0.9rem;
+}
+
+/* ── CHALLENGE ITEMS ── */
+.challenge-item {
+  display: flex; align-items: center; gap: 14px;
+  padding: 12px 0; border-bottom: 1px solid var(--border);
+}
+.challenge-item:last-child { border-bottom: none; }
+.ch-icon {
+  width: 42px; height: 42px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; flex-shrink: 0;
+}
+.ch-info { flex: 1; }
+.ch-title { font-weight: 600; font-size: 0.9rem; }
+.ch-sub { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+.ch-xp {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: var(--lime);
+  background: rgba(163,230,53,0.1);
+  padding: 4px 10px; border-radius: 20px;
+}
+.ch-done { opacity: 0.5; }
+.ch-done .ch-title { text-decoration: line-through; }
+
+/* ── AI COACH ── */
+.coach-bubble {
+  display: flex; gap: 10px; margin-bottom: 12px;
+}
+.coach-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--purple), var(--sky));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; flex-shrink: 0;
+}
+.coach-msg {
+  background: var(--navy);
+  border: 1px solid var(--border);
+  border-radius: 0 12px 12px 12px;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  flex: 1;
+}
+.user-bubble { flex-direction: row-reverse; }
+.user-bubble .coach-msg {
+  border-radius: 12px 0 12px 12px;
+  background: rgba(163,230,53,0.1);
+  border-color: rgba(163,230,53,0.3);
+  text-align: right;
+}
+.coach-input { display: flex; gap: 8px; margin-top: 12px; }
+.coach-input input {
+  flex: 1; background: var(--navy);
+  border: 1px solid var(--border); border-radius: 10px;
+  color: var(--text); padding: 10px 14px;
+  font-family: 'Inter', sans-serif; font-size: 0.85rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.coach-input input:focus { border-color: var(--lime); }
+.typing { display: none; }
+.typing-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--muted); margin: 0 2px; animation: blink 1.2s infinite; }
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes blink { 0%,80%,100%{opacity:0.3} 40%{opacity:1} }
+
+/* ── LOGIN ── */
+#login { background: radial-gradient(ellipse at 30% 40%, #1E3A5F 0%, var(--navy) 70%); }
+.login-hero { text-align: center; padding: 60px 20px 30px; }
+.login-logo { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 3rem; background: linear-gradient(90deg, var(--lime), var(--sky), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: shimmer 3s linear infinite; background-size: 200%; }
+@keyframes shimmer { 0%{background-position:0%} 100%{background-position:200%} }
+.login-tagline { color: var(--muted); margin-top: 8px; font-size: 1rem; }
+.login-stats { display: flex; justify-content: center; gap: 30px; margin: 24px 0; }
+.login-stat { text-align: center; }
+.login-stat .n { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.6rem; color: var(--lime); }
+.login-stat .l { font-size: 0.72rem; color: var(--muted); }
+.role-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin: 20px 0; }
+.role-btn {
+  background: var(--card); border: 2px solid var(--border);
+  border-radius: 14px; padding: 20px 10px;
+  cursor: pointer; text-align: center;
+  transition: all 0.2s; font-family: 'Nunito', sans-serif; color: var(--text);
+}
+.role-btn:hover, .role-btn.selected { border-color: var(--lime); background: rgba(163,230,53,0.08); }
+.role-btn .emoji { font-size: 2rem; display: block; margin-bottom: 6px; }
+.role-btn .role-name { font-weight: 800; font-size: 0.9rem; }
+.login-btn { width: 100%; padding: 14px; font-size: 1rem; border-radius: 12px; margin-top: 8px; justify-content: center; }
+.login-form { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
+.login-field label, .field label {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--muted);
+  margin-bottom: 5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.input-wrap { position: relative; }
+.form-control {
+  width: 100%;
+  background: var(--navy);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  padding: 11px 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.form-control:focus { border-color: var(--lime); box-shadow: 0 0 0 3px rgba(163,230,53,0.12); }
+.password-toggle {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+.login-error { min-height: 18px; color: #FCA5A5; font-size: 0.78rem; }
+.demo-access {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+.demo-access .chip { cursor: pointer; }
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ── MINI CHART ── */
+.bar-chart { display: flex; align-items: flex-end; gap: 4px; height: 70px; margin-top: 10px; }
+.bar-chart .bar {
+  flex: 1; border-radius: 4px 4px 0 0;
+  background: linear-gradient(180deg, var(--lime), var(--lime-dark));
+  opacity: 0.7; transition: opacity 0.2s;
+  animation: growUp 0.6s ease forwards;
+  transform-origin: bottom;
+  transform: scaleY(0);
+}
+.bar-chart .bar:hover { opacity: 1; }
+@keyframes growUp { to { transform: scaleY(1); } }
+.bar-chart .bar.today { opacity: 1; background: linear-gradient(180deg, var(--sky), #0284C7); }
+.day-labels { display: flex; gap: 4px; margin-top: 4px; }
+.day-labels span { flex: 1; text-align: center; font-size: 0.62rem; color: var(--muted); }
+
+/* ── ACTIVITY FEED ── */
+.feed-item {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 10px 0; border-bottom: 1px solid var(--border);
+}
+.feed-item:last-child { border-bottom: none; }
+.feed-icon {
+  width: 34px; height: 34px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; flex-shrink: 0;
+}
+.feed-info .name { font-weight: 600; font-size: 0.85rem; }
+.feed-info .action { font-size: 0.78rem; color: var(--muted); }
+.feed-time { font-size: 0.7rem; color: var(--muted); margin-top: 4px; }
+
+/* ── TEACHER QUICK STATS ── */
+.analytics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px,1fr)); gap: 10px; }
+.analytic-card {
+  background: var(--navy); border-radius: 12px; padding: 14px 12px;
+  border: 1px solid var(--border); text-align: center;
+}
+.analytic-card .a-val { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.5rem; color: var(--lime); }
+.analytic-card .a-lbl { font-size: 0.7rem; color: var(--muted); margin-top: 2px; }
+.analytic-card .a-trend { font-size: 0.72rem; color: var(--green); margin-top: 4px; }
+
+/* ── VERIFY CARD ── */
+.verify-card { display: flex; flex-direction: column; gap: 8px; }
+.verify-img { width: 100%; border-radius: 10px; object-fit: cover; height: 120px; background: var(--navy); display: flex; align-items: center; justify-content: center; font-size: 2rem; }
+.verify-row { display: flex; gap: 8px; margin-top: 6px; }
+
+/* ── PARENT ── */
+.health-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.health-row:last-child { border-bottom: none; }
+.health-label { font-size: 0.85rem; color: var(--muted); }
+.health-val { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.9rem; }
+.trend-up { color: var(--green); }
+.trend-down { color: var(--coral); }
+.form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px,1fr)); gap: 10px; }
+.metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(118px,1fr)); gap: 10px; }
+.metric-tile {
+  background: var(--navy);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+}
+.metric-tile .metric-label { color: var(--muted); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; }
+.metric-tile .metric-value { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.2rem; margin-top: 4px; }
+.metric-tile .metric-note { color: var(--muted); font-size: 0.72rem; margin-top: 3px; }
+.outcome-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.outcome-card:last-child { border-bottom: none; }
+.outcome-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.outcome-title { font-weight: 700; font-size: 0.88rem; }
+.outcome-sub { color: var(--muted); font-size: 0.76rem; line-height: 1.45; margin-top: 2px; }
+.reward-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px,1fr)); gap: 10px; }
+.reward-card {
+  background: var(--navy);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+}
+.reward-top { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.reward-icon { font-size: 1.6rem; }
+.reward-name { font-weight: 800; font-size: 0.92rem; }
+.reward-meta { color: var(--muted); font-size: 0.74rem; margin-top: 2px; }
+.voucher-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+.voucher-ticket {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  background: rgba(56,189,248,0.08);
+  border: 1px dashed rgba(56,189,248,0.55);
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 0.78rem;
+}
+.voucher-code { font-family: 'Nunito', sans-serif; font-weight: 900; color: var(--sky); }
+.privacy-note {
+  color: var(--muted);
+  font-size: 0.76rem;
+  line-height: 1.55;
+  margin-top: 10px;
+}
+
+/* ── TABS ── */
+.tabs { display: flex; gap: 4px; background: var(--navy); border-radius: 12px; padding: 4px; margin-bottom: 16px; }
+.tab-btn {
+  flex: 1; padding: 8px 6px;
+  border: none; border-radius: 8px;
+  background: transparent; color: var(--muted);
+  font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 0.8rem;
+  cursor: pointer; transition: all 0.2s;
+}
+.tab-btn.active { background: var(--card); color: var(--text); }
+.tab-pane { display: none; }
+.tab-pane.active { display: block; }
+
+/* ── MISC ── */
+.section-label {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800; font-size: 0.72rem;
+  color: var(--muted); text-transform: uppercase;
+  letter-spacing: 0.1em; margin: 20px 0 6px;
+}
+.chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: var(--navy); border: 1px solid var(--border);
+  border-radius: 20px; padding: 3px 10px; font-size: 0.75rem;
+}
+.qr-box {
+  background: white; border-radius: 12px;
+  padding: 16px; text-align: center;
+  color: var(--navy); display: inline-block;
+}
+.qr-pattern { font-size: 4rem; line-height: 1; }
+.nav-bottom {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+  background: var(--navy2); border-top: 1px solid var(--border);
+  display: flex; padding: 8px;
+}
+.nav-item {
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  padding: 6px 4px; border-radius: 10px; cursor: pointer;
+  font-size: 0.62rem; color: var(--muted);
+  transition: color 0.2s, background 0.2s;
+  background: transparent; border: none;
+  font-family: 'Inter', sans-serif;
+}
+.nav-item:hover { background: rgba(148,163,184,0.08); color: var(--text); }
+.nav-item.active-nav { color: var(--lime); background: rgba(163,230,53,0.08); }
+.nav-item .ni { font-size: 1.3rem; margin-bottom: 2px; }
+.pb-safe { padding-bottom: 70px; }
+.student-view { display: none; }
+.student-view.active { display: block; }
+.view-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 8px 0 14px;
+}
+.view-title {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900;
+  font-size: 1.35rem;
+}
+.view-sub { color: var(--muted); font-size: 0.82rem; line-height: 1.45; margin-top: 2px; }
+.wallet-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  background: linear-gradient(135deg, rgba(163,230,53,0.12), rgba(56,189,248,0.08));
+  border: 1px solid rgba(163,230,53,0.25);
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 12px;
+}
+.wallet-balance {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 900;
+  font-size: 1.45rem;
+  color: var(--lime);
+}
+.task-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.task-row:last-child { border-bottom: none; }
+.task-info { flex: 1; }
+.task-title { font-weight: 700; font-size: 0.9rem; }
+.task-sub { color: var(--muted); font-size: 0.75rem; margin-top: 2px; }
+.task-meta { color: var(--lime); font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 0.86rem; }
+.insight-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px,1fr)); gap: 10px; }
+.insight-tile {
+  background: var(--navy);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+}
+.insight-k { color: var(--muted); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; }
+.insight-v { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.18rem; margin-top: 4px; }
+.history-list { display: flex; flex-direction: column; gap: 8px; }
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  background: var(--navy);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-size: 0.78rem;
+}
+.history-code { color: var(--sky); font-family: 'Nunito', sans-serif; font-weight: 900; }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; top: 80px; right: 20px; z-index: 999;
+  background: var(--card); border: 1px solid var(--lime);
+  border-radius: 12px; padding: 12px 18px;
+  font-size: 0.85rem; font-weight: 600;
+  transform: translateX(120%); transition: transform 0.3s;
+  color: var(--lime);
+}
+.toast.show { transform: translateX(0); }
+
+/* ── MARKETPLACE ── */
+.market-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 0; border-bottom: 1px solid var(--border);
+}
+.market-item:last-child { border-bottom: none; }
+.market-icon { font-size: 1.6rem; }
+.market-info { flex: 1; }
+.market-name { font-weight: 600; font-size: 0.9rem; }
+.market-cost { font-size: 0.75rem; color: var(--muted); }
+
+/* ── Loader ── */
+.loader { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.6s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 480px) {
+  .login-logo { font-size: 2.2rem; }
+  .grid { grid-template-columns: 1fr; }
+  .role-grid { grid-template-columns: repeat(3,1fr); }
+}
+</style>
+</head>
+<body>
+
+<!-- Particles -->
+<div id="particles"></div>
+
+<!-- Toast -->
+<div class="toast" id="toast">🎉 +50 XP Earned!</div>
+
+<!-- ══════════════ LOGIN ══════════════ -->
+<div id="login" class="page active">
+  <div class="login-hero">
+    <div class="login-logo">🏆 KINEVO</div>
+    <p class="login-tagline">Malaysia's #1 School Wellness Platform</p>
+    <div class="login-stats">
+      <div class="login-stat"><div class="n">452</div><div class="l">Active Students</div></div>
+      <div class="login-stat"><div class="n">3.4M</div><div class="l">Weekly Steps</div></div>
+      <div class="login-stat"><div class="n">81%</div><div class="l">Challenge Rate</div></div>
+    </div>
+  </div>
+  <div class="container" style="max-width:400px">
+    <div class="card card-glow">
+      <h3 style="margin-bottom:16px">Secure Demo Login</h3>
+      <div class="role-grid">
+        <div class="role-btn selected" onclick="selectRole(this,'Student')">
+          <span class="emoji">🎓</span><div class="role-name">Student</div>
+        </div>
+        <div class="role-btn" onclick="selectRole(this,'Teacher')">
+          <span class="emoji">👩‍🏫</span><div class="role-name">Teacher</div>
+        </div>
+        <div class="role-btn" onclick="selectRole(this,'Parent')">
+          <span class="emoji">👨‍👩‍👧</span><div class="role-name">Parent</div>
+        </div>
+      </div>
+      <div class="login-form">
+        <div class="login-field">
+          <label for="login-id">School ID</label>
+          <input class="form-control" id="login-id" type="text" value="SMKPJ-AIMAN" autocomplete="username">
+        </div>
+        <div class="login-field">
+          <label for="login-pin">Password / PIN</label>
+          <div class="input-wrap">
+            <input class="form-control" id="login-pin" type="password" placeholder="Enter role PIN" autocomplete="current-password" onkeydown="if(event.key==='Enter')login()">
+            <button class="password-toggle" type="button" onclick="togglePassword()">Show</button>
+          </div>
+        </div>
+        <div class="login-error" id="login-error" aria-live="polite"></div>
+        <button class="btn login-btn" onclick="login()">Unlock KINEVO →</button>
+      </div>
+      <div class="demo-access">
+        <span class="chip" onclick="useDemoPin('Student')">Student PIN 1234</span>
+        <span class="chip" onclick="useDemoPin('Teacher')">Teacher PIN 2468</span>
+        <span class="chip" onclick="useDemoPin('Parent')">Parent PIN 1357</span>
+      </div>
+      <div class="privacy-note">Demo accounts use role-based access so parent health data, teacher approvals, and student rewards stay in separate views.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ STUDENT ══════════════ -->
+<div id="student" class="page">
+  <div class="app-header">
+    <h1>🏆 KINEVO</h1>
+    <div class="header-right">
+      <div class="streak-pill">🔥 14 Days</div>
+      <button class="btn btn-ghost btn-sm" onclick="logout()">Exit</button>
+    </div>
+  </div>
+
+  <div class="container pb-safe">
+    <section class="student-view active" id="student-view-home">
+
+    <!-- PROFILE HERO -->
+    <div class="card card-glow card-accent">
+      <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">
+        <div class="ring-outer">
+          <svg class="ring-svg" viewBox="0 0 120 120">
+            <defs>
+              <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color:#A3E635"/>
+                <stop offset="100%" style="stop-color:#38BDF8"/>
+              </linearGradient>
+            </defs>
+            <circle class="ring-track" cx="60" cy="60" r="56"/>
+            <circle class="ring-fill" cx="60" cy="60" r="56"/>
+          </svg>
+          <div class="ring-label">
+            <span class="xp-val">4,850</span>
+            <span class="xp-lbl">XP</span>
+          </div>
+        </div>
+        <div style="flex:1">
+          <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:1.4rem">Aiman</div>
+          <div style="color:var(--muted);font-size:0.85rem;margin:2px 0">Level 8 ⭐ · Class 4A</div>
+          <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+            <span class="chip" id="student-coin-chip">🪙 920 Student Coins</span>
+            <span class="chip" style="border-color:var(--lime);color:var(--lime)">#7 in School</span>
+          </div>
+          <div style="margin-top:10px">
+            <div style="font-size:0.75rem;color:var(--muted);margin-bottom:4px">Level 9 in 1,150 XP</div>
+            <div class="prog-bar"><div class="prog-fill" style="width:72%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUICK STATS -->
+    <p class="section-label">Today's Stats</p>
+    <div class="grid3">
+      <div class="stat-pill">
+        <span class="val" style="color:var(--sky)">7,421</span>
+        <div class="lbl">👟 Steps</div>
+      </div>
+      <div class="stat-pill">
+        <span class="val" style="color:var(--green)">1.6L</span>
+        <div class="lbl">💧 Water</div>
+      </div>
+      <div class="stat-pill">
+        <span class="val" style="color:var(--coral)">420</span>
+        <div class="lbl">🔥 Cal</div>
+      </div>
+      <div class="stat-pill">
+        <span class="val" style="color:var(--purple)">38m</span>
+        <div class="lbl">⏱ Active</div>
+      </div>
+      <div class="stat-pill">
+        <span class="val" style="color:var(--pink)">3/4</span>
+        <div class="lbl">✅ Challenges</div>
+      </div>
+      <div class="stat-pill">
+        <span class="val" style="color:var(--lime)">14</span>
+        <div class="lbl">🔥 Streak</div>
+      </div>
+    </div>
+
+    <!-- STEP TREND CHART -->
+    <p class="section-label">7-Day Step Trend</p>
+    <div class="card">
+      <div class="bar-chart">
+        <div class="bar" style="height:55%;animation-delay:0.0s"></div>
+        <div class="bar" style="height:70%;animation-delay:0.1s"></div>
+        <div class="bar" style="height:48%;animation-delay:0.2s"></div>
+        <div class="bar" style="height:85%;animation-delay:0.3s"></div>
+        <div class="bar" style="height:60%;animation-delay:0.4s"></div>
+        <div class="bar" style="height:78%;animation-delay:0.5s"></div>
+        <div class="bar today" style="height:93%;animation-delay:0.6s"></div>
+      </div>
+      <div class="day-labels">
+        <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Today</span>
+      </div>
+    </div>
+
+    <!-- DAILY CHALLENGES -->
+    <p class="section-label">Daily Challenges</p>
+    <div class="card card-coral">
+      <div class="challenge-item ch-done">
+        <div class="ch-icon" style="background:rgba(74,222,128,0.15)">✅</div>
+        <div class="ch-info">
+          <div class="ch-title">Walk 8,000 Steps</div>
+          <div class="ch-sub">Completed at 2:14 PM</div>
+        </div>
+        <div class="ch-xp">+50 XP</div>
+      </div>
+      <div class="challenge-item ch-done">
+        <div class="ch-icon" style="background:rgba(56,189,248,0.15)">✅</div>
+        <div class="ch-info">
+          <div class="ch-title">Drink 2L Water</div>
+          <div class="ch-sub">Completed at 12:00 PM</div>
+        </div>
+        <div class="ch-xp">+20 XP</div>
+      </div>
+      <div class="challenge-item ch-done">
+        <div class="ch-icon" style="background:rgba(163,230,53,0.15)">✅</div>
+        <div class="ch-info">
+          <div class="ch-title">Healthy Meal Upload</div>
+          <div class="ch-sub">Pending teacher approval</div>
+        </div>
+        <div class="ch-xp">+30 XP</div>
+      </div>
+      <div class="challenge-item">
+        <div class="ch-icon" style="background:rgba(249,115,22,0.15)">🏸</div>
+        <div class="ch-info">
+          <div class="ch-title">Sports Club Attendance</div>
+          <div class="ch-sub">Scan QR at the hall • Today 4–6 PM</div>
+        </div>
+        <div class="ch-xp">+100 XP</div>
+      </div>
+    </div>
+
+    <!-- TABS: LEADERBOARD / BADGES / MARKET -->
+    <p class="section-label">Explore</p>
+    <div class="card" style="padding:12px">
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab(this,'lb')">🏅 Leaderboard</button>
+        <button class="tab-btn" onclick="switchTab(this,'badges')">🎖 Badges</button>
+        <button class="tab-btn" onclick="switchTab(this,'market')">🛒 Market</button>
+      </div>
+
+      <!-- LEADERBOARD -->
+      <div class="tab-pane active" id="tab-lb">
+        <div class="lb-row">
+          <div class="lb-rank gold">1</div>
+          <div class="lb-avatar" style="background:linear-gradient(135deg,#FCD34D,#F59E0B)">👧</div>
+          <div class="lb-info"><div class="lb-name">Sarah Tan</div><div class="lb-sub">7-day streak 🔥</div></div>
+          <div class="lb-xp">7,200</div>
+        </div>
+        <div class="lb-row">
+          <div class="lb-rank silver">2</div>
+          <div class="lb-avatar" style="background:linear-gradient(135deg,#CBD5E1,#94A3B8)">👦</div>
+          <div class="lb-info"><div class="lb-name">Daniel Lim</div><div class="lb-sub">Sports MVP 🏆</div></div>
+          <div class="lb-xp">6,980</div>
+        </div>
+        <div class="lb-row">
+          <div class="lb-rank bronze">3</div>
+          <div class="lb-avatar" style="background:linear-gradient(135deg,#C2855A,#92400E)">👧</div>
+          <div class="lb-info"><div class="lb-name">Mei Ling</div><div class="lb-sub">Hydration Hero 💧</div></div>
+          <div class="lb-xp">6,750</div>
+        </div>
+        <div class="lb-row" style="opacity:0.4">
+          <div class="lb-rank" style="color:var(--muted)">⋯</div>
+          <div style="flex:1;font-size:0.75rem;color:var(--muted);text-align:center">4 more students</div>
+        </div>
+        <div class="lb-row me">
+          <div class="lb-rank" style="color:var(--lime)">7</div>
+          <div class="lb-avatar" style="background:linear-gradient(135deg,var(--lime-dark),var(--sky))">🧑</div>
+          <div class="lb-info"><div class="lb-name">You (Aiman)</div><div class="lb-sub">↑ Up 2 spots this week!</div></div>
+          <div class="lb-xp">4,850</div>
+        </div>
+        <div style="margin-top:12px;text-align:center">
+          <div style="font-size:0.8rem;color:var(--muted)">🎁 Top 3 this month win RM100 Sports Voucher + Trophy</div>
+        </div>
+      </div>
+
+      <!-- BADGES -->
+      <div class="tab-pane" id="tab-badges">
+        <div class="badge-grid">
+          <div class="badge earned">🥇 First 1K Steps</div>
+          <div class="badge earned">💧 Hydration Hero</div>
+          <div class="badge earned">🏃 7-Day Streak</div>
+          <div class="badge earned">🥗 Healthy Eater</div>
+          <div class="badge earned">🏸 Club Member</div>
+          <div class="badge earned">⭐ Level 5</div>
+          <div class="badge locked">🔥 30-Day Streak</div>
+          <div class="badge locked">🏆 Top 3 School</div>
+          <div class="badge locked">💪 10K Steps</div>
+          <div class="badge locked">🌟 Level 10</div>
+        </div>
+        <div style="margin-top:12px;font-size:0.78rem;color:var(--muted)">6/10 badges earned · 4 more to unlock</div>
+      </div>
+
+      <!-- MARKETPLACE -->
+      <div class="tab-pane" id="tab-market">
+        <div class="market-item">
+          <div class="market-icon">🍎</div>
+          <div class="market-info">
+            <div class="market-name">Canteen Fruit Cup</div>
+            <div class="market-cost">250 student coins · Redeem in Store</div>
+          </div>
+          <button class="btn btn-sm" onclick="showStudentView(null,'store')">Open Store</button>
+        </div>
+        <div class="market-item">
+          <div class="market-icon">📚</div>
+          <div class="market-info">
+            <div class="market-name">RM10 Book Voucher</div>
+            <div class="market-cost">800 student coins · Popular Bookstore</div>
+          </div>
+          <button class="btn btn-sm" onclick="showStudentView(null,'store')">Open Store</button>
+        </div>
+        <div class="market-item">
+          <div class="market-icon">🏃</div>
+          <div class="market-info">
+            <div class="market-name">Sports Gear Discount</div>
+            <div class="market-cost">1,100 student coins · Decathlon</div>
+          </div>
+          <button class="btn btn-sm btn-ghost" onclick="showStudentView(null,'store')">Open Store</button>
+        </div>
+        <div class="market-item">
+          <div class="market-icon">🎬</div>
+          <div class="market-info">
+            <div class="market-name">Movie Ticket Lucky Draw</div>
+            <div class="market-cost">1,500 student coins · Monthly draw</div>
+          </div>
+          <button class="btn btn-sm btn-ghost" onclick="showStudentView(null,'store')">Open Store</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI COACH -->
+    <p class="section-label">AI Wellness Coach</p>
+    <div class="card card-purple">
+      <div id="coach-chat">
+        <div class="coach-bubble">
+          <div class="coach-avatar">🤖</div>
+          <div class="coach-msg">Hey Aiman! You're at 7,421 steps — just 579 more to hit your goal. A quick 6-minute walk will do it! Also, don't forget Sports Club at 4 PM for that juicy +100 XP. 💪</div>
+        </div>
+      </div>
+      <div class="coach-bubble typing" id="typing-indicator" style="margin-top:8px">
+        <div class="coach-avatar">🤖</div>
+        <div class="coach-msg" style="padding:12px 16px"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div>
+      </div>
+      <div class="coach-input">
+        <input type="text" id="coach-input" placeholder="Ask your coach anything…" onkeydown="if(event.key==='Enter')sendCoach()">
+        <button class="btn btn-sm" onclick="sendCoach()">Send</button>
+      </div>
+    </div>
+    </section>
+
+    <section class="student-view" id="student-view-activity">
+      <div class="view-head">
+        <div>
+          <div class="view-title">Activity</div>
+          <div class="view-sub">Daily movement, QR check-ins, hydration, meals, and recovery in one place.</div>
+        </div>
+        <span class="chip" style="color:var(--lime);border-color:var(--lime)">Today · 76% complete</span>
+      </div>
+
+      <div class="grid3">
+        <div class="stat-pill"><span class="val" style="color:var(--sky)">7,421</span><div class="lbl">Steps Today</div></div>
+        <div class="stat-pill"><span class="val" style="color:var(--green)">1.6L</span><div class="lbl">Water Logged</div></div>
+        <div class="stat-pill"><span class="val" style="color:var(--purple)">38m</span><div class="lbl">Active Minutes</div></div>
+      </div>
+
+      <p class="section-label">Action Center</p>
+      <div class="card card-sky">
+        <div class="task-row">
+          <div class="ch-icon" style="background:rgba(56,189,248,0.15)">▣</div>
+          <div class="task-info"><div class="task-title">Scan Sports Club QR</div><div class="task-sub">Badminton Hall · Today 4:00 PM to 6:00 PM</div></div>
+          <button class="btn btn-sm btn-sky" onclick="completeStudentTask(this, 80, 'Sports Club checked in')">Scan</button>
+        </div>
+        <div class="task-row">
+          <div class="ch-icon" style="background:rgba(74,222,128,0.15)">🥗</div>
+          <div class="task-info"><div class="task-title">Upload Healthy Meal</div><div class="task-sub">Photo pending teacher review · Earns XP and student coins</div></div>
+          <button class="btn btn-sm" onclick="completeStudentTask(this, 40, 'Healthy meal uploaded')">Upload</button>
+        </div>
+        <div class="task-row">
+          <div class="ch-icon" style="background:rgba(167,139,250,0.15)">💧</div>
+          <div class="task-info"><div class="task-title">Log Final Water Bottle</div><div class="task-sub">400 ml remaining to hit the 2L hydration goal</div></div>
+          <button class="btn btn-sm btn-ghost" onclick="completeStudentTask(this, 15, 'Hydration goal completed')">Log</button>
+        </div>
+      </div>
+
+      <p class="section-label">Coach Insights</p>
+      <div class="insight-list">
+        <div class="insight-tile"><div class="insight-k">Best Activity Window</div><div class="insight-v" style="color:var(--sky)">4-6 PM</div><div class="task-sub">Sports club drives your highest step spikes.</div></div>
+        <div class="insight-tile"><div class="insight-k">Recovery Score</div><div class="insight-v" style="color:var(--green)">82%</div><div class="task-sub">Sleep and resting heart rate are improving.</div></div>
+        <div class="insight-tile"><div class="insight-k">Next Goal</div><div class="insight-v" style="color:var(--coral)">579 steps</div><div class="task-sub">Small walk needed to close the day.</div></div>
+      </div>
+    </section>
+
+    <section class="student-view" id="student-view-rank">
+      <div class="view-head">
+        <div>
+          <div class="view-title">Rank</div>
+          <div class="view-sub">School leaderboard, class challenges, and badges that show progress beyond raw steps.</div>
+        </div>
+        <span class="chip" style="color:var(--lime);border-color:var(--lime)">#7 School · #2 Class 4A</span>
+      </div>
+
+      <div class="card card-accent">
+        <h3>School Leaderboard</h3>
+        <div class="lb-row"><div class="lb-rank gold">1</div><div class="lb-avatar" style="background:linear-gradient(135deg,#FCD34D,#F59E0B)">👧</div><div class="lb-info"><div class="lb-name">Sarah Tan</div><div class="lb-sub">7,200 XP · 21-day streak</div></div><div class="lb-xp">1st</div></div>
+        <div class="lb-row"><div class="lb-rank silver">2</div><div class="lb-avatar" style="background:linear-gradient(135deg,#CBD5E1,#94A3B8)">👦</div><div class="lb-info"><div class="lb-name">Daniel Lim</div><div class="lb-sub">6,980 XP · Sports MVP</div></div><div class="lb-xp">2nd</div></div>
+        <div class="lb-row"><div class="lb-rank bronze">3</div><div class="lb-avatar" style="background:linear-gradient(135deg,#C2855A,#92400E)">👧</div><div class="lb-info"><div class="lb-name">Mei Ling</div><div class="lb-sub">6,750 XP · Hydration Hero</div></div><div class="lb-xp">3rd</div></div>
+        <div class="lb-row me"><div class="lb-rank" style="color:var(--lime)">7</div><div class="lb-avatar" style="background:linear-gradient(135deg,var(--lime-dark),var(--sky))">🧑</div><div class="lb-info"><div class="lb-name">You (Aiman)</div><div class="lb-sub">4,850 XP · Up 2 spots this week</div></div><div class="lb-xp">7th</div></div>
+      </div>
+
+      <div class="grid">
+        <div class="card card-sky">
+          <h3>Class Quest</h3>
+          <div class="task-title">4A vs 4B Weekend Movement Challenge</div>
+          <div class="task-sub">Class 4A has 81% completion. One more check-in keeps the class in first place.</div>
+          <div class="prog-bar"><div class="prog-fill" style="width:81%;background:linear-gradient(90deg,var(--sky),var(--lime))"></div></div>
+          <button class="btn btn-sm btn-sky" onclick="showStudentView(null,'activity')">Go to Activity</button>
+        </div>
+        <div class="card card-purple">
+          <h3>Badge Progress</h3>
+          <div class="badge-grid">
+            <div class="badge earned">💧 Hydration Hero</div>
+            <div class="badge earned">🏃 7-Day Streak</div>
+            <div class="badge earned">🥗 Healthy Eater</div>
+            <div class="badge locked">🔥 30-Day Streak</div>
+            <div class="badge locked">🏆 Top 3 School</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="student-view" id="student-view-store">
+      <div class="view-head">
+        <div>
+          <div class="view-title">Store</div>
+          <div class="view-sub">Redeem student coins earned from challenges, approvals, streaks, and verified activity.</div>
+        </div>
+        <span class="chip" style="color:var(--lime);border-color:var(--lime)">🪙 <span id="student-store-balance">920</span> student coins</span>
+      </div>
+
+      <div class="wallet-banner">
+        <div>
+          <div class="task-title">Student Wallet</div>
+          <div class="view-sub">Student coins are separate from Family Coins in the parent portal.</div>
+        </div>
+        <div class="wallet-balance"><span id="student-wallet-balance">920</span></div>
+      </div>
+
+      <div class="reward-grid">
+        <div class="reward-card">
+          <div class="reward-top"><div class="reward-icon">🍎</div><div><div class="reward-name">Canteen Fruit Cup</div><div class="reward-meta">250 student coins · Healthy snack</div></div></div>
+          <button class="btn btn-sm student-reward-btn" data-cost="250" data-name="Canteen Fruit Cup" data-code="STU-FRUIT" onclick="redeemStudentReward(this)">Redeem</button>
+        </div>
+        <div class="reward-card">
+          <div class="reward-top"><div class="reward-icon">📚</div><div><div class="reward-name">RM10 Book Voucher</div><div class="reward-meta">800 student coins · Popular Bookstore</div></div></div>
+          <button class="btn btn-sm student-reward-btn" data-cost="800" data-name="RM10 Book Voucher" data-code="STU-BOOK10" onclick="redeemStudentReward(this)">Redeem</button>
+        </div>
+        <div class="reward-card">
+          <div class="reward-top"><div class="reward-icon">🏸</div><div><div class="reward-name">Sports Gear Discount</div><div class="reward-meta">1,100 student coins · Decathlon</div></div></div>
+          <button class="btn btn-sm student-reward-btn" data-cost="1100" data-name="Sports Gear Discount" data-code="STU-SPORT15" onclick="redeemStudentReward(this)">Redeem</button>
+        </div>
+        <div class="reward-card">
+          <div class="reward-top"><div class="reward-icon">🎬</div><div><div class="reward-name">Movie Ticket Lucky Draw</div><div class="reward-meta">1,500 student coins · Monthly draw</div></div></div>
+          <button class="btn btn-sm student-reward-btn" data-cost="1500" data-name="Movie Ticket Lucky Draw" data-code="STU-MOVIE" onclick="redeemStudentReward(this)">Redeem</button>
+        </div>
+      </div>
+
+      <p class="section-label">Voucher Wallet</p>
+      <div class="card">
+        <div class="history-list" id="student-voucher-list">
+          <div class="history-item"><span>Active voucher: RM5 smoothie reward</span><span class="history-code">STU-SMOO5</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="student-view" id="student-view-profile">
+      <div class="view-head">
+        <div>
+          <div class="view-title">Profile</div>
+          <div class="view-sub">A more realistic student profile with device sync, family link, targets, and privacy status.</div>
+        </div>
+        <span class="chip" style="color:var(--green);border-color:var(--green)">Guardian linked</span>
+      </div>
+
+      <div class="card card-glow card-accent">
+        <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+          <div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--lime-dark),var(--sky));display:flex;align-items:center;justify-content:center;font-size:2rem">🧑</div>
+          <div style="flex:1">
+            <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:1.25rem">Aiman</div>
+            <div class="view-sub">Class 4A · Age 14 · SMK Puchong Jaya</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+              <span class="chip">⌚ Mi Band synced 8 min ago</span>
+              <span class="chip">🔒 Parent health data private</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="card card-sky">
+          <h3>Personal Targets</h3>
+          <div class="health-row"><div class="health-label">Daily steps</div><div class="health-val">8,000</div></div>
+          <div class="health-row"><div class="health-label">Sleep target</div><div class="health-val">8h</div></div>
+          <div class="health-row"><div class="health-label">Hydration target</div><div class="health-val">2L</div></div>
+          <div class="health-row"><div class="health-label">Screen target</div><div class="health-val">Under 2h</div></div>
+        </div>
+        <div class="card card-purple">
+          <h3>Weekly Report</h3>
+          <div class="outcome-card"><div class="outcome-icon" style="background:rgba(74,222,128,0.15)">✓</div><div><div class="outcome-title">Strongest habit</div><div class="outcome-sub">Hydration hit target on 5 of 7 days.</div></div></div>
+          <div class="outcome-card"><div class="outcome-icon" style="background:rgba(249,115,22,0.15)">!</div><div><div class="outcome-title">Needs attention</div><div class="outcome-sub">Weekend movement drops by 18% compared with school days.</div></div></div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <nav class="nav-bottom">
+    <button class="nav-item active-nav" type="button" onclick="showStudentView(this,'home')"><div class="ni">🏠</div>Home</button>
+    <button class="nav-item" type="button" onclick="showStudentView(this,'activity')"><div class="ni">🏃</div>Activity</button>
+    <button class="nav-item" type="button" onclick="showStudentView(this,'rank')"><div class="ni">🏅</div>Rank</button>
+    <button class="nav-item" type="button" onclick="showStudentView(this,'store')"><div class="ni">🛒</div>Store</button>
+    <button class="nav-item" type="button" onclick="showStudentView(this,'profile')"><div class="ni">👤</div>Profile</button>
+  </nav>
+</div>
+
+<!-- ══════════════ TEACHER ══════════════ -->
+<div id="teacher" class="page">
+  <div class="app-header">
+    <h1>🏆 KINEVO Admin</h1>
+    <div class="header-right">
+      <button class="btn btn-ghost btn-sm" onclick="logout()">Exit</button>
+    </div>
+  </div>
+
+  <div class="container pb-safe">
+
+    <div style="display:flex;align-items:center;gap:12px;margin:8px 0 20px">
+      <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--sky),var(--purple));display:flex;align-items:center;justify-content:center;font-size:1.3rem">👩‍🏫</div>
+      <div>
+        <div style="font-family:'Nunito',sans-serif;font-weight:800;font-size:1.1rem">Puan Siti Rahimah</div>
+        <div style="font-size:0.78rem;color:var(--muted)">PE Teacher · SMK Puchong Jaya</div>
+      </div>
+    </div>
+
+    <!-- ANALYTICS -->
+    <p class="section-label">School Analytics — June 2026</p>
+    <div class="analytics-grid">
+      <div class="analytic-card">
+        <div class="a-val">452</div><div class="a-lbl">Active Students</div>
+        <div class="a-trend">↑ 12%</div>
+      </div>
+      <div class="analytic-card">
+        <div class="a-val" style="color:var(--sky)">3.4M</div><div class="a-lbl">Weekly Steps</div>
+        <div class="a-trend">↑ 8%</div>
+      </div>
+      <div class="analytic-card">
+        <div class="a-val" style="color:var(--coral)">81%</div><div class="a-lbl">Challenge Rate</div>
+        <div class="a-trend">↑ 5%</div>
+      </div>
+      <div class="analytic-card">
+        <div class="a-val" style="color:var(--purple)">7,850</div><div class="a-lbl">Avg Daily Steps</div>
+        <div class="a-trend">↑ 3%</div>
+      </div>
+      <div class="analytic-card">
+        <div class="a-val" style="color:var(--green)">68%</div><div class="a-lbl">Sports Participation</div>
+        <div class="a-trend">↑ 22%</div>
+      </div>
+      <div class="analytic-card">
+        <div class="a-val" style="color:var(--pink)">1,247</div><div class="a-lbl">Meal Uploads</div>
+        <div class="a-trend">↑ 15%</div>
+      </div>
+    </div>
+
+    <!-- PARTICIPATION CHART -->
+    <p class="section-label">Weekly Participation Rate</p>
+    <div class="card">
+      <div class="bar-chart" style="height:90px">
+        <div class="bar" style="height:72%;animation-delay:0.0s;background:linear-gradient(var(--sky),#0284C7)"></div>
+        <div class="bar" style="height:78%;animation-delay:0.1s;background:linear-gradient(var(--sky),#0284C7)"></div>
+        <div class="bar" style="height:65%;animation-delay:0.2s;background:linear-gradient(var(--sky),#0284C7)"></div>
+        <div class="bar" style="height:84%;animation-delay:0.3s;background:linear-gradient(var(--sky),#0284C7)"></div>
+        <div class="bar" style="height:91%;animation-delay:0.4s;background:linear-gradient(var(--sky),#0284C7)"></div>
+        <div class="bar" style="height:76%;animation-delay:0.5s;background:linear-gradient(var(--sky),#0284C7)"></div>
+        <div class="bar today" style="height:81%;animation-delay:0.6s"></div>
+      </div>
+      <div class="day-labels">
+        <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Today</span>
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- GENERATE QR -->
+      <div class="card card-sky">
+        <h3>Generate Activity QR</h3>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <select id="qr-activity" style="background:var(--navy);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:8px;font-family:'Inter',sans-serif">
+            <option>Football Training</option>
+            <option>Badminton Club</option>
+            <option>Morning Run</option>
+            <option>Swimming</option>
+            <option>Basketball</option>
+          </select>
+          <button class="btn btn-sky btn-sm" onclick="generateQR()">Generate QR ↗</button>
+        </div>
+        <div id="qr-display" style="margin-top:14px;text-align:center;display:none">
+          <div class="qr-box">
+            <div class="qr-pattern">▣▤▣<br>▤▣▤<br>▣▤▣</div>
+            <div style="font-size:0.75rem;margin-top:8px;color:#1E293B;font-weight:700" id="qr-label">Football Training</div>
+          </div>
+          <div style="font-size:0.75rem;color:var(--muted);margin-top:8px">Students scan to log attendance</div>
+        </div>
+      </div>
+
+      <!-- VERIFY UPLOADS -->
+      <div class="card card-accent">
+        <h3>Pending Approvals <span class="chip" style="color:var(--coral)">3</span></h3>
+        <div class="verify-card">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="font-size:1.2rem">🥗</div>
+            <div style="flex:1">
+              <div style="font-weight:600;font-size:0.85rem">Aiman — Healthy Lunch</div>
+              <div style="font-size:0.75rem;color:var(--muted)">Submitted 12:34 PM</div>
+            </div>
+          </div>
+          <div class="verify-img" style="background:var(--navy);color:var(--muted);font-size:0.8rem;border:1px dashed var(--border)">📷 Nasi Lemak + ulam</div>
+          <div class="verify-row">
+            <button class="btn btn-sm" style="flex:1" onclick="showToast('✅ Approved! +30 XP sent')">✓ Approve</button>
+            <button class="btn btn-ghost btn-sm" style="flex:1" onclick="showToast('❌ Submission rejected')">✗ Reject</button>
+          </div>
+        </div>
+        <hr style="border-color:var(--border);margin:12px 0">
+        <div class="verify-card">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="font-size:1.2rem">💧</div>
+            <div style="flex:1">
+              <div style="font-weight:600;font-size:0.85rem">Sarah — Water Challenge</div>
+              <div style="font-size:0.75rem;color:var(--muted)">Submitted 11:05 AM</div>
+            </div>
+          </div>
+          <div class="verify-img" style="background:var(--navy);color:var(--muted);font-size:0.8rem;border:1px dashed var(--border)">📷 2L water bottle</div>
+          <div class="verify-row">
+            <button class="btn btn-sm" style="flex:1" onclick="showToast('✅ Approved! +20 XP sent')">✓ Approve</button>
+            <button class="btn btn-ghost btn-sm" style="flex:1">✗ Reject</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACTIVITY FEED -->
+    <p class="section-label">Live Activity Feed</p>
+    <div class="card">
+      <div class="feed-item">
+        <div class="feed-icon" style="background:rgba(74,222,128,0.15)">🏃</div>
+        <div class="feed-info">
+          <div class="name">Daniel Lim</div>
+          <div class="action">completed 10,000 steps — new personal record! 🎉</div>
+          <div class="feed-time">2 mins ago</div>
+        </div>
+      </div>
+      <div class="feed-item">
+        <div class="feed-icon" style="background:rgba(163,230,53,0.15)">⭐</div>
+        <div class="feed-info">
+          <div class="name">Aiman</div>
+          <div class="action">reached Level 8 and earned the "Healthy Eater" badge</div>
+          <div class="feed-time">15 mins ago</div>
+        </div>
+      </div>
+      <div class="feed-item">
+        <div class="feed-icon" style="background:rgba(56,189,248,0.15)">🏸</div>
+        <div class="feed-info">
+          <div class="name">12 students</div>
+          <div class="action">scanned in for Badminton Club — 68% participation</div>
+          <div class="feed-time">1 hr ago</div>
+        </div>
+      </div>
+      <div class="feed-item">
+        <div class="feed-icon" style="background:rgba(167,139,250,0.15)">🏆</div>
+        <div class="feed-info">
+          <div class="name">4A class</div>
+          <div class="action">is leading the monthly class challenge with 81% completion!</div>
+          <div class="feed-time">2 hrs ago</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════ PARENT ══════════════ -->
+<div id="parent" class="page">
+  <div class="app-header">
+    <h1>🏆 Parent Portal</h1>
+    <div class="header-right">
+      <button class="btn btn-ghost btn-sm" onclick="logout()">Exit</button>
+    </div>
+  </div>
+
+  <div class="container pb-safe">
+
+    <!-- CHILD CARD -->
+    <div class="card card-glow card-accent" style="margin-top:12px">
+      <div style="display:flex;gap:14px;align-items:center">
+        <div style="width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--lime-dark),var(--sky));display:flex;align-items:center;justify-content:center;font-size:1.8rem">🧑</div>
+        <div>
+          <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:1.2rem">Aiman</div>
+          <div style="font-size:0.8rem;color:var(--muted)">Class 4A · Level 8 ⭐ · SMK Puchong Jaya</div>
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <span class="chip" style="color:var(--lime);border-color:var(--lime)">🏅 #7 School</span>
+            <span class="chip" style="color:var(--coral)">🔥 14-day streak</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- THIS MONTH SNAPSHOT -->
+    <p class="section-label">June 2026 — Monthly Snapshot</p>
+    <div class="grid3">
+      <div class="stat-pill">
+        <span class="val" style="color:var(--lime)">4,850</span>
+        <div class="lbl">Total XP</div>
+      </div>
+      <div class="stat-pill">
+        <span class="val" style="color:var(--sky)">7,421</span>
+        <div class="lbl">Avg Steps/Day</div>
+      </div>
+      <div class="stat-pill">
+        <span class="val" style="color:var(--green)">18</span>
+        <div class="lbl">Challenges Done</div>
+      </div>
+      <div class="stat-pill">
+        <span class="val" style="color:var(--purple)">23</span>
+        <div class="lbl">Healthy Meals</div>
+      </div>
+      <div class="stat-pill">
+        <span class="val" style="color:var(--coral)">6</span>
+        <div class="lbl">Badges Earned</div>
+      </div>
+      <div class="stat-pill">
+        <span class="val" style="color:var(--pink)" id="parent-coin-snapshot">210</span>
+        <div class="lbl">Family Coins</div>
+      </div>
+    </div>
+
+    <!-- PARENT HEALTH CHECK-IN -->
+    <p class="section-label">Parent Health Check-In</p>
+    <div class="grid">
+      <div class="card card-sky">
+        <h3>Update Vitals</h3>
+        <div class="form-grid">
+          <div class="field">
+            <label for="vital-weight">Weight (kg)</label>
+            <input class="form-control" id="vital-weight" type="number" min="20" max="120" step="0.1" value="47.8">
+          </div>
+          <div class="field">
+            <label for="vital-height">Height (cm)</label>
+            <input class="form-control" id="vital-height" type="number" min="100" max="210" step="0.1" value="158">
+          </div>
+          <div class="field">
+            <label for="vital-hr">Resting HR</label>
+            <input class="form-control" id="vital-hr" type="number" min="40" max="140" step="1" value="74">
+          </div>
+          <div class="field">
+            <label for="vital-bp">Blood Pressure</label>
+            <input class="form-control" id="vital-bp" type="text" value="108/70">
+          </div>
+          <div class="field">
+            <label for="vital-sleep">Sleep (hours)</label>
+            <input class="form-control" id="vital-sleep" type="number" min="0" max="14" step="0.5" value="8">
+          </div>
+          <div class="field">
+            <label for="vital-screen">Screen Time</label>
+            <input class="form-control" id="vital-screen" type="number" min="0" max="16" step="0.5" value="2.5">
+          </div>
+          <div class="field" style="grid-column:1/-1">
+            <label for="vital-mood">Energy / Mood</label>
+            <select class="form-control" id="vital-mood">
+              <option>Energetic</option>
+              <option selected>Good</option>
+              <option>Tired</option>
+              <option>Stressed</option>
+            </select>
+          </div>
+          <div class="field" style="grid-column:1/-1">
+            <label for="vital-note">Parent Note</label>
+            <input class="form-control" id="vital-note" type="text" value="Badminton practice today, appetite normal.">
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+          <button class="btn btn-sky" onclick="saveParentCheckin()">Save check-in · +35 family coins</button>
+          <button class="btn btn-ghost" onclick="showToast('Nurse review request sent for Aiman')">Send to school nurse</button>
+        </div>
+        <div class="privacy-note">Parent-entered vitals are tracked as wellness trends for the demo. Clinical interpretation should be reviewed by a qualified health professional.</div>
+      </div>
+
+      <div class="card card-purple">
+        <h3>Latest Measurable Outcome</h3>
+        <div class="metric-grid">
+          <div class="metric-tile">
+            <div class="metric-label">Weight</div>
+            <div class="metric-value" id="latest-weight">47.8 kg</div>
+            <div class="metric-note">+0.3 kg in 30 days</div>
+          </div>
+          <div class="metric-tile">
+            <div class="metric-label">BMI Trend</div>
+            <div class="metric-value" id="latest-bmi">19.1</div>
+            <div class="metric-note" id="latest-bmi-zone">Healthy tracking zone</div>
+          </div>
+          <div class="metric-tile">
+            <div class="metric-label">Resting HR</div>
+            <div class="metric-value" id="latest-hr">74 bpm</div>
+            <div class="metric-note">-4 bpm from baseline</div>
+          </div>
+          <div class="metric-tile">
+            <div class="metric-label">Blood Pressure</div>
+            <div class="metric-value" id="latest-bp">108/70</div>
+            <div class="metric-note">Logged by parent</div>
+          </div>
+        </div>
+        <div class="outcome-card">
+          <div class="outcome-icon" style="background:rgba(163,230,53,0.14)">🪙</div>
+          <div>
+            <div class="outcome-title"><span id="checkin-count">3/8</span> monthly check-ins complete</div>
+            <div class="outcome-sub">Every verified parent check-in adds Family Coins and improves the reliability of wellness trends.</div>
+            <div class="prog-bar"><div class="prog-fill" id="checkin-progress" style="width:38%"></div></div>
+          </div>
+        </div>
+        <div class="outcome-card">
+          <div class="outcome-icon" style="background:rgba(56,189,248,0.14)">📌</div>
+          <div>
+            <div class="outcome-title">Coach insight</div>
+            <div class="outcome-sub" id="latest-insight">Sleep is strong and activity is rising. Keep weekend movement steady to protect the 14-day streak.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HEALTH TRENDS -->
+    <p class="section-label">Health Trends vs Last Month</p>
+    <div class="card">
+      <div class="health-row">
+        <div class="health-label">⚡ Physical Activity</div>
+        <div class="health-val trend-up">↑ +15%</div>
+      </div>
+      <div class="health-row">
+        <div class="health-label">🏸 Sports Participation</div>
+        <div class="health-val trend-up">↑ +22%</div>
+      </div>
+      <div class="health-row">
+        <div class="health-label">🥗 Healthy Meal Rate</div>
+        <div class="health-val trend-up">↑ +11%</div>
+      </div>
+      <div class="health-row">
+        <div class="health-label">📱 Screen Time</div>
+        <div class="health-val" style="color:var(--green)">↓ -8%</div>
+      </div>
+      <div class="health-row">
+        <div class="health-label">💧 Daily Hydration</div>
+        <div class="health-val trend-up">↑ +18%</div>
+      </div>
+      <div class="health-row">
+        <div class="health-label">😴 Reported Sleep Quality</div>
+        <div class="health-val" style="color:var(--muted)">→ No change</div>
+      </div>
+    </div>
+
+    <!-- MEASURABLE OUTCOMES -->
+    <p class="section-label">Outcome Goals This Month</p>
+    <div class="card">
+      <div class="outcome-card">
+        <div class="outcome-icon" style="background:rgba(74,222,128,0.15)">🎯</div>
+        <div style="flex:1">
+          <div class="outcome-title">Average daily steps: 7,421 / 8,000</div>
+          <div class="outcome-sub">Needs 579 more steps per day to hit the June target.</div>
+          <div class="prog-bar"><div class="prog-fill" style="width:93%"></div></div>
+        </div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-icon" style="background:rgba(167,139,250,0.15)">😴</div>
+        <div style="flex:1">
+          <div class="outcome-title">Sleep consistency: 5 / 7 nights on target</div>
+          <div class="outcome-sub">Target is 8 hours on school nights. Parent check-ins keep this measurable.</div>
+          <div class="prog-bar"><div class="prog-fill" style="width:71%;background:linear-gradient(90deg,var(--purple),var(--sky))"></div></div>
+        </div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-icon" style="background:rgba(249,115,22,0.15)">📱</div>
+        <div style="flex:1">
+          <div class="outcome-title">Screen time: down 8%</div>
+          <div class="outcome-sub">Current average is <span id="latest-screen">2.5h</span> after homework. Goal is under 2 hours.</div>
+          <div class="prog-bar"><div class="prog-fill" style="width:62%;background:linear-gradient(90deg,var(--coral),var(--pink))"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACTIVITY CHART -->
+    <p class="section-label">Step Activity (Last 7 Days)</p>
+    <div class="card">
+      <div class="bar-chart" style="height:80px">
+        <div class="bar" style="height:60%;animation-delay:0.0s;background:linear-gradient(var(--purple),#7C3AED)"></div>
+        <div class="bar" style="height:75%;animation-delay:0.1s;background:linear-gradient(var(--purple),#7C3AED)"></div>
+        <div class="bar" style="height:50%;animation-delay:0.2s;background:linear-gradient(var(--purple),#7C3AED)"></div>
+        <div class="bar" style="height:88%;animation-delay:0.3s;background:linear-gradient(var(--purple),#7C3AED)"></div>
+        <div class="bar" style="height:65%;animation-delay:0.4s;background:linear-gradient(var(--purple),#7C3AED)"></div>
+        <div class="bar" style="height:82%;animation-delay:0.5s;background:linear-gradient(var(--purple),#7C3AED)"></div>
+        <div class="bar today" style="height:93%;animation-delay:0.6s"></div>
+      </div>
+      <div class="day-labels">
+        <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Today</span>
+      </div>
+    </div>
+
+    <!-- REWARD WALLET -->
+    <p class="section-label">Family Coins & Voucher Wallet</p>
+    <div class="card card-coral">
+      <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px">
+        <div>
+          <h3 style="margin-bottom:4px">Family Rewards</h3>
+          <div style="font-size:0.8rem;color:var(--muted)">Family Coins are separate from student coins and come from verified parent health check-ins.</div>
+        </div>
+        <span class="chip" style="color:var(--lime);border-color:var(--lime);font-weight:800">🪙 <span id="wallet-coin-balance">210</span> family coins</span>
+      </div>
+      <div class="reward-grid">
+        <div class="reward-card">
+          <div class="reward-top"><div class="reward-icon">🥗</div><div><div class="reward-name">Family Healthy Meal Kit</div><div class="reward-meta">120 family coins · Weekend groceries</div></div></div>
+          <button class="btn btn-sm parent-reward-btn" data-cost="120" data-name="Family Healthy Meal Kit" data-code="FAM-MEAL" onclick="redeemParentReward(this)">Redeem</button>
+        </div>
+        <div class="reward-card">
+          <div class="reward-top"><div class="reward-icon">🥤</div><div><div class="reward-name">Parent Smoothie Voucher</div><div class="reward-meta">180 family coins · Juice Works</div></div></div>
+          <button class="btn btn-sm parent-reward-btn" data-cost="180" data-name="Parent Smoothie Voucher" data-code="FAM-SMOOTH" onclick="redeemParentReward(this)">Redeem</button>
+        </div>
+        <div class="reward-card">
+          <div class="reward-top"><div class="reward-icon">📚</div><div><div class="reward-name">Family Book Voucher</div><div class="reward-meta">300 family coins · Popular Bookstore</div></div></div>
+          <button class="btn btn-sm parent-reward-btn" data-cost="300" data-name="Family Book Voucher" data-code="FAM-BOOK" onclick="redeemParentReward(this)">Redeem</button>
+        </div>
+        <div class="reward-card">
+          <div class="reward-top"><div class="reward-icon">🏸</div><div><div class="reward-name">Family Badminton Pass</div><div class="reward-meta">350 family coins · Weekend court</div></div></div>
+          <button class="btn btn-sm parent-reward-btn" data-cost="350" data-name="Family Badminton Pass" data-code="FAM-COURT" onclick="redeemParentReward(this)">Redeem</button>
+        </div>
+        <div class="reward-card">
+          <div class="reward-top"><div class="reward-icon">🏃</div><div><div class="reward-name">Family Sports Gear 15% Off</div><div class="reward-meta">600 family coins · Decathlon</div></div></div>
+          <button class="btn btn-sm parent-reward-btn" data-cost="600" data-name="Family Sports Gear 15% Off" data-code="FAM-SPORT15" onclick="redeemParentReward(this)">Redeem</button>
+        </div>
+      </div>
+      <div class="voucher-list" id="voucher-list">
+        <div class="voucher-ticket"><span>Active family voucher: Weekend fruit basket</span><span class="voucher-code">FAM-FRUIT</span></div>
+      </div>
+    </div>
+
+    <!-- RECENT MILESTONES -->
+    <p class="section-label">Recent Milestones</p>
+    <div class="card" id="parent-timeline">
+      <div class="feed-item">
+        <div class="feed-icon" style="background:rgba(163,230,53,0.15)">🎖</div>
+        <div class="feed-info">
+          <div class="name">Badge Earned</div>
+          <div class="action">Aiman earned the "Healthy Eater" badge — 7 consecutive healthy meal uploads</div>
+          <div class="feed-time">Today</div>
+        </div>
+      </div>
+      <div class="feed-item">
+        <div class="feed-icon" style="background:rgba(249,115,22,0.15)">🔥</div>
+        <div class="feed-info">
+          <div class="name">Streak Milestone</div>
+          <div class="action">14-day activity streak — longest streak ever!</div>
+          <div class="feed-time">Yesterday</div>
+        </div>
+      </div>
+      <div class="feed-item">
+        <div class="feed-icon" style="background:rgba(56,189,248,0.15)">⭐</div>
+        <div class="feed-info">
+          <div class="name">Level Up</div>
+          <div class="action">Reached Level 8 — top 20% of students this month</div>
+          <div class="feed-time">3 days ago</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PARENT TIP -->
+    <div class="card" style="background:rgba(163,230,53,0.05);border-color:rgba(163,230,53,0.2)">
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <div style="font-size:1.5rem">💡</div>
+        <div>
+          <div style="font-family:'Nunito',sans-serif;font-weight:800;margin-bottom:4px">Monthly Wellness Tip</div>
+          <div style="font-size:0.83rem;color:var(--muted);line-height:1.6">Aiman's step count peaks on Thursdays (sports club day). Encouraging weekend walks together could help maintain the streak on off-days. Consider planning a family hike this Saturday! 🥾</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ── PARTICLES ──
+(function(){
+  const el = document.getElementById('particles');
+  const colors = ['#A3E635','#38BDF8','#A78BFA','#F472B6','#4ADE80'];
+  for(let i=0;i<30;i++){
+    const p=document.createElement('div');
+    p.className='particle';
+    p.style.left=Math.random()*100+'%';
+    p.style.background=colors[Math.floor(Math.random()*colors.length)];
+    p.style.animationDelay=Math.random()*8+'s';
+    p.style.animationDuration=(6+Math.random()*6)+'s';
+    el.appendChild(p);
+  }
+})();
+
+// ── ROLE SELECTION ──
+const demoPins = { Student: '1234', Teacher: '2468', Parent: '1357' };
+const demoIds = { Student: 'SMKPJ-AIMAN', Teacher: 'SMKPJ-TEACHER', Parent: 'SMKPJ-PARENT' };
+let studentCoins = 920;
+let familyCoins = 210;
+let parentCheckins = 3;
+let selectedRole = 'Student';
+
+function setText(id, text){
+  const el = document.getElementById(id);
+  if(el) el.textContent = text;
+}
+
+function escapeHTML(text){
+  return text.replace(/[&<>"']/g, char => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#039;'
+  }[char]));
+}
+
+function selectRole(btn, role){
+  document.querySelectorAll('.role-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedRole = role;
+  const idInput = document.getElementById('login-id');
+  const pinInput = document.getElementById('login-pin');
+  const error = document.getElementById('login-error');
+  if(idInput) idInput.value = demoIds[role];
+  if(pinInput) pinInput.value = '';
+  if(error) error.textContent = '';
+}
+
+function useDemoPin(role){
+  const btn = [...document.querySelectorAll('.role-btn')].find(item => item.textContent.includes(role));
+  if(btn) selectRole(btn, role);
+  document.getElementById('login-pin').value = demoPins[role];
+  document.getElementById('login-error').textContent = '';
+}
+
+function togglePassword(){
+  const input = document.getElementById('login-pin');
+  const toggle = document.querySelector('.password-toggle');
+  const isHidden = input.type === 'password';
+  input.type = isHidden ? 'text' : 'password';
+  toggle.textContent = isHidden ? 'Hide' : 'Show';
+}
+
+// ── LOGIN ──
+function login(){
+  const id = document.getElementById('login-id').value.trim();
+  const pin = document.getElementById('login-pin').value.trim();
+  const error = document.getElementById('login-error');
+  if(!id){
+    error.textContent = 'Enter a school ID to continue.';
+    return;
+  }
+  if(pin !== demoPins[selectedRole]){
+    error.textContent = `Incorrect ${selectedRole.toLowerCase()} PIN. Use the demo PIN shown below.`;
+    return;
+  }
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.getElementById(selectedRole.toLowerCase()).classList.add('active');
+  error.textContent = '';
+  if(selectedRole === 'Student'){
+    showStudentView(null, 'home');
+    updateStudentCoins();
+  }
+  if(selectedRole === 'Parent') updateFamilyCoins();
+  window.scrollTo(0,0);
+}
+
+// ── LOGOUT ──
+function logout(){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.getElementById('login').classList.add('active');
+  const pin = document.getElementById('login-pin');
+  if(pin) pin.value = '';
+  window.scrollTo(0,0);
+}
+
+// ── TABS ──
+function switchTab(btn, id){
+  btn.closest('.card').querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  btn.closest('.card').querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+}
+
+// ── STUDENT BOTTOM NAV ──
+function showStudentView(btn, id){
+  document.querySelectorAll('#student .student-view').forEach(view => view.classList.remove('active'));
+  const target = document.getElementById(`student-view-${id}`);
+  if(target) target.classList.add('active');
+  document.querySelectorAll('#student .nav-item').forEach(item => item.classList.remove('active-nav'));
+  const navButton = btn || document.querySelector(`#student .nav-item[onclick*="'${id}'"]`);
+  if(navButton) navButton.classList.add('active-nav');
+  const studentPage = document.getElementById('student');
+  if(studentPage?.classList.contains('active')) window.scrollTo(0,0);
+  if(id === 'store') renderStudentRewards();
+}
+
+// ── TOAST ──
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+// ── QR GENERATOR ──
+function generateQR(){
+  const act=document.getElementById('qr-activity').value;
+  const d=document.getElementById('qr-display');
+  document.getElementById('qr-label').textContent=act;
+  d.style.display='block';
+  showToast('QR generated for '+act);
+}
+
+// ── STUDENT COINS & REWARDS ──
+function updateStudentCoins(){
+  const coinText = studentCoins.toLocaleString('en-MY');
+  setText('student-coin-chip', `🪙 ${coinText} Student Coins`);
+  setText('student-store-balance', coinText);
+  setText('student-wallet-balance', coinText);
+  renderStudentRewards();
+}
+
+function renderStudentRewards(){
+  document.querySelectorAll('.student-reward-btn').forEach(btn => {
+    if(btn.dataset.redeemed === 'true') return;
+    const cost = Number(btn.dataset.cost);
+    const affordable = studentCoins >= cost;
+    btn.disabled = !affordable;
+    btn.classList.toggle('btn-ghost', !affordable);
+    btn.textContent = affordable ? 'Redeem' : `${cost - studentCoins} more coins`;
+  });
+}
+
+function completeStudentTask(btn, coins, label){
+  if(btn.dataset.done === 'true') return;
+  btn.dataset.done = 'true';
+  btn.disabled = true;
+  btn.classList.add('btn-ghost');
+  btn.textContent = 'Done';
+  studentCoins += coins;
+  updateStudentCoins();
+  showToast(`✅ ${label} · +${coins} student coins`);
+}
+
+function redeemStudentReward(btn){
+  const cost = Number(btn.dataset.cost);
+  const name = btn.dataset.name;
+  const code = btn.dataset.code;
+  if(studentCoins < cost){
+    showToast(`Need ${cost - studentCoins} more student coins for ${name}`);
+    renderStudentRewards();
+    return;
+  }
+  studentCoins -= cost;
+  btn.dataset.redeemed = 'true';
+  btn.disabled = true;
+  btn.classList.add('btn-ghost');
+  btn.textContent = 'Added to wallet';
+
+  const list = document.getElementById('student-voucher-list');
+  if(list){
+    const ticket = document.createElement('div');
+    ticket.className = 'history-item';
+    ticket.innerHTML = `<span>Active voucher: ${escapeHTML(name)}</span><span class="history-code">${escapeHTML(code)}</span>`;
+    list.prepend(ticket);
+  }
+  updateStudentCoins();
+  showToast(`🎁 ${name} redeemed`);
+}
+
+// ── PARENT CHECK-INS & FAMILY REWARDS ──
+function updateFamilyCoins(){
+  const coinText = familyCoins.toLocaleString('en-MY');
+  setText('wallet-coin-balance', coinText);
+  setText('parent-coin-snapshot', coinText);
+  renderFamilyRewards();
+}
+
+function renderFamilyRewards(){
+  document.querySelectorAll('.parent-reward-btn').forEach(btn => {
+    if(btn.dataset.redeemed === 'true') return;
+    const cost = Number(btn.dataset.cost);
+    const affordable = familyCoins >= cost;
+    btn.disabled = !affordable;
+    btn.classList.toggle('btn-ghost', !affordable);
+    btn.textContent = affordable ? 'Redeem' : `${cost - familyCoins} more family coins`;
+  });
+}
+
+function saveParentCheckin(){
+  const weight = Number(document.getElementById('vital-weight').value);
+  const height = Number(document.getElementById('vital-height').value);
+  const hr = Number(document.getElementById('vital-hr').value);
+  const bp = document.getElementById('vital-bp').value.trim();
+  const sleep = Number(document.getElementById('vital-sleep').value);
+  const screen = Number(document.getElementById('vital-screen').value);
+  const mood = document.getElementById('vital-mood').value;
+  const note = document.getElementById('vital-note').value.trim();
+
+  if(!weight || !height || !hr || !bp || sleep < 0 || screen < 0){
+    showToast('Please complete all vitals before saving');
+    return;
+  }
+  if(weight < 20 || weight > 120 || height < 100 || height > 210 || hr < 40 || hr > 140){
+    showToast('One measurement looks outside the demo range');
+    return;
+  }
+
+  const bmi = weight / Math.pow(height / 100, 2);
+  let zone = 'Healthy tracking zone';
+  if(bmi < 16.5) zone = 'Below target - monitor';
+  if(bmi > 23.5) zone = 'Above target - monitor';
+
+  familyCoins += 35;
+  parentCheckins = Math.min(parentCheckins + 1, 8);
+
+  setText('latest-weight', `${weight.toFixed(1)} kg`);
+  setText('latest-bmi', bmi.toFixed(1));
+  setText('latest-bmi-zone', zone);
+  setText('latest-hr', `${Math.round(hr)} bpm`);
+  setText('latest-bp', bp);
+  setText('latest-screen', `${screen.toFixed(1)}h`);
+  setText('checkin-count', `${parentCheckins}/8`);
+  const progress = document.getElementById('checkin-progress');
+  if(progress) progress.style.width = `${Math.round((parentCheckins / 8) * 100)}%`;
+
+  let insight = 'Vitals saved. Activity, sleep, and recovery look steady for this week.';
+  if(sleep < 7) insight = 'Sleep is below target. Try an earlier wind-down and lighter evening screen time tonight.';
+  else if(screen > 3) insight = 'Screen time is above the family goal. A short walk after homework could help rebalance the day.';
+  else if(hr > 90) insight = 'Resting heart rate is higher than usual. Keep hydration up and consider a calmer recovery day.';
+  else if(mood === 'Energetic') insight = 'Energy is high and recovery looks good. This is a strong day for sports club participation.';
+  setText('latest-insight', insight);
+
+  const timeline = document.getElementById('parent-timeline');
+  if(timeline){
+    const item = document.createElement('div');
+    item.className = 'feed-item';
+    item.innerHTML = `<div class="feed-icon" style="background:rgba(56,189,248,0.15)">🩺</div><div class="feed-info"><div class="name">Parent Check-In Saved</div><div class="action">Weight ${weight.toFixed(1)} kg · BP ${escapeHTML(bp)} · sleep ${sleep.toFixed(1)}h · ${escapeHTML(note || mood)}</div><div class="feed-time">Just now · +35 family coins</div></div>`;
+    timeline.prepend(item);
+  }
+
+  updateFamilyCoins();
+  showToast('✅ Vitals saved · +35 family coins earned');
+}
+
+function redeemParentReward(btn){
+  const cost = Number(btn.dataset.cost);
+  const name = btn.dataset.name;
+  const code = btn.dataset.code;
+  if(familyCoins < cost){
+    showToast(`Need ${cost - familyCoins} more family coins for ${name}`);
+    renderFamilyRewards();
+    return;
+  }
+  familyCoins -= cost;
+  btn.dataset.redeemed = 'true';
+  btn.disabled = true;
+  btn.classList.add('btn-ghost');
+  btn.textContent = 'Added to wallet';
+
+  const list = document.getElementById('voucher-list');
+  if(list){
+    const ticket = document.createElement('div');
+    ticket.className = 'voucher-ticket';
+    ticket.innerHTML = `<span>Active family voucher: ${escapeHTML(name)}</span><span class="voucher-code">${escapeHTML(code)}</span>`;
+    list.prepend(ticket);
+  }
+  updateFamilyCoins();
+  showToast(`🎁 ${name} redeemed`);
+}
+
+// ── AI COACH ──
+const coachReplies = {
+  steps: "You need 579 more steps to hit today's goal. A 6-minute walk after dinner should get you there without feeling like extra work. 👟",
+  sleep: "Your parent check-ins show sleep is strongest when screen time ends before 9 PM. Try a short stretch routine tonight and protect that 8-hour target. 🌙",
+  food: "Nice timing after Sports Club: choose protein plus fruit for recovery. Nasi lemak can still fit, just balance it with water and extra vegetables. 🥗",
+  default: "You're doing well, Aiman. Your 14-day streak and top-20% ranking show real consistency, so focus on one small win today: steps, water, or sleep. 🔥"
+};
+
+function pickCoachReply(msg){
+  const text = msg.toLowerCase();
+  if(text.includes('step') || text.includes('walk') || text.includes('run')) return coachReplies.steps;
+  if(text.includes('sleep') || text.includes('tired') || text.includes('rest')) return coachReplies.sleep;
+  if(text.includes('food') || text.includes('meal') || text.includes('eat') || text.includes('protein')) return coachReplies.food;
+  return coachReplies.default;
+}
+
+function sendCoach(){
+  const input = document.getElementById('coach-input');
+  const msg = input.value.trim();
+  if(!msg) return;
+  input.value = '';
+
+  const chat = document.getElementById('coach-chat');
+
+  // User bubble
+  const userDiv = document.createElement('div');
+  userDiv.className = 'coach-bubble user-bubble';
+  userDiv.innerHTML = `<div class="coach-avatar" style="background:linear-gradient(135deg,var(--lime-dark),var(--sky))">🧑</div><div class="coach-msg">${escapeHTML(msg)}</div>`;
+  chat.appendChild(userDiv);
+
+  // Show typing
+  document.getElementById('typing-indicator').style.display = 'flex';
+  chat.parentElement.scrollTop = chat.parentElement.scrollHeight;
+
+  setTimeout(() => {
+    const reply = pickCoachReply(msg);
+    document.getElementById('typing-indicator').style.display = 'none';
+    const botDiv = document.createElement('div');
+    botDiv.className = 'coach-bubble';
+    botDiv.innerHTML = `<div class="coach-avatar">🤖</div><div class="coach-msg">${escapeHTML(reply)}</div>`;
+    chat.appendChild(botDiv);
+    chat.scrollTop = chat.scrollHeight;
+  }, 650);
+}
+
+updateStudentCoins();
+updateFamilyCoins();
+</script>
+</body>
+</html>
